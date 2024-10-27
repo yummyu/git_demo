@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+<body>
+
+<div id="container">
+    <input type="text" id="input" />
+    <p id="messages"></p>
+</div>
+
+<script type="text/javascript">
+    let websocket = new WebSocket("ws://localhost:8080/demo/websocket");
+
+    // 连接断开
+    websocket.onclose = e => {
+        console.log(`连接关闭: code=${e.code}, reason=${e.reason}`)
+    }
+    // 收到消息
+    websocket.onmessage = e => {
+        console.log(`收到消息：${e.data}`);
+        let div = document.getElementById("messages");
+        div.innerText += e.data + "\n";
+    }
+    // 异常
+    websocket.onerror = e => {
+        console.log("连接异常")
+        console.error(e)
+    }
+    // 连接打开
+    websocket.onopen = e => {
+        console.log("连接打开");
+        document.getElementById("input").onkeydown = e => {
+            if (e.key === "Enter") {
+                websocket.send(e.target.value);
+                e.target.value = "";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
