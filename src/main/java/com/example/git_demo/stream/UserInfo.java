@@ -21,6 +21,7 @@ public class UserInfo {
     private int age;
     private String address;
     private String phone;
+    private String status;
 
     public static List<UserInfo> getData() {
         try {
@@ -37,7 +38,7 @@ public class UserInfo {
                             if (str.length < 4) {
                                 throw new IllegalArgumentException("Invalid line format: " + line);
                             }
-                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3]);
+                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3],"");
                         })
                         .collect(Collectors.toCollection(ArrayList::new));
             }
