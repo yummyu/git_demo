@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -15,7 +16,8 @@ class ExcelDemoTest {
 
     @BeforeAll
     public static void init() {
-        data = UserInfo.getData();
+//        data = UserInfo.getData("UserInfo.txt");
+        data = UserInfo.getData("MaxUserInfo.txt");
     }
 
     @Test
@@ -30,5 +32,12 @@ class ExcelDemoTest {
                 // 当然这里数据也可以用 List<List<String>> 去传入
                 .doWrite(data);
     }
+
+    @Test
+    public void testDynamicHead2() throws IOException {
+
+    }
+
+
 
 }

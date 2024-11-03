@@ -18,7 +18,7 @@ public class StreamDemoTest {
 
     @BeforeAll
     public static void init() {
-        data = UserInfo.getData();
+        data = UserInfo.getData("UserInfo.txt");
     }
 
     @Test

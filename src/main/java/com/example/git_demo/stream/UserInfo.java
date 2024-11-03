@@ -7,6 +7,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +23,11 @@ public class UserInfo {
     private String address;
     private String phone;
     private String status;
+    private LocalDateTime localDateTime;
 
-    public static List<UserInfo> getData() {
+    public static List<UserInfo> getData(String fileName) {
         try {
-            File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "UserInfo.txt");
+            File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
 
             if (!file.exists() || file.length() == 0) {
                 throw new IOException("File does not exist or is empty: " + file.getAbsolutePath());
@@ -38,7 +40,7 @@ public class UserInfo {
                             if (str.length < 4) {
                                 throw new IllegalArgumentException("Invalid line format: " + line);
                             }
-                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3],"");
+                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3],"",LocalDateTime.now());
                         })
                         .collect(Collectors.toCollection(ArrayList::new));
             }
