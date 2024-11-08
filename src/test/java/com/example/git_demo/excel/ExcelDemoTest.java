@@ -35,7 +35,7 @@ class ExcelDemoTest {
 
     @Test
     public void testDynamicHead2() throws IOException {
-
+        ExcelUtil.generateExcelTemplate();
     }
 
 

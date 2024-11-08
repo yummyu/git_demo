@@ -40,7 +40,7 @@ public class UserInfo {
                             if (str.length < 4) {
                                 throw new IllegalArgumentException("Invalid line format: " + line);
                             }
-                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3],"",LocalDateTime.now());
+                            return new UserInfo(str[0], Integer.parseInt(str[1]), str[2], str[3],"状态",LocalDateTime.now());
                         })
                         .collect(Collectors.toCollection(ArrayList::new));
             }

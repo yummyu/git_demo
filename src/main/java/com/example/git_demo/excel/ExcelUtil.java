@@ -1,9 +1,18 @@
 package com.example.git_demo.excel;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.util.ListUtils;
+import com.example.git_demo.excel.entity.ComplexTemplate;
+import com.example.git_demo.excel.entity.FixedHead;
 import com.google.common.collect.Lists;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Slf4j
@@ -71,5 +80,36 @@ public class ExcelUtil {
         return map;
     }
 
+    public static void setResponseHeader(HttpServletResponse response, String fileName) {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        String fileNameEncode = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+        response.setHeader("Content-disposition", "attachment;filename=" + fileNameEncode + ".xlsx");
+    }
+
+
+    //生成一个excel模板
+    public static File generateExcelTemplate()  {
+        String filePath = "D:\\tmp\\excelTemplate.xlsx";
+        EasyExcel.write(filePath,FixedHead.class).sheet("demo").doWrite(new ArrayList<>());
+        return new File(filePath);
+    }
+
+    public static File generateComplexTemplate()  {
+        String filePath = "D:\\tmp\\ComplexTemplate.xlsx";
+        List<List<Object>> list = ListUtils.newArrayList();
+        
+        List<Object> data = ListUtils.newArrayList();
+        data.add("{.name}");
+        data.add("{.age}");
+        data.add("{.address}");
+        data.add("{.phone}");
+        data.add("{.status}");
+        data.add("{.localDateTime}");
+        list.add(data);
+        
+        EasyExcel.write(filePath, ComplexTemplate.class).sheet("demo").doWrite(list);
+        return new File(filePath);
+    }
 
 }

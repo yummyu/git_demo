@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -29,11 +28,19 @@ public class ExcelDemoController {
     }
 
     @GetMapping(value = "/download")
-    public void download(@RequestParam(value = "heads") String heads, HttpServletResponse response) throws IOException {
+    public void download(HttpServletResponse response) throws IOException {
         log.info("开始文件下载");
         try {
-//            excelDemoService.downloadDynamicNoEntity(heads, response);
-            excelDemoService.downloadDynamicWithEntity(heads, response);
+            //无实体动态表头下载
+//          excelDemoService.downloadDynamicNoEntity("heads", response);
+            //有实体动态表头下载
+//          excelDemoService.downloadDynamicWithEntity("heads", response);
+            //固定表头下载
+//            excelDemoService.downloadWithFixedHead(response);
+            //数据量大的复杂填充，采用模板方式
+            excelDemoService.complexFillWithTable(response);
+
+
         } catch (IOException e) {
             response.reset();
             response.setContentType("application/json");
