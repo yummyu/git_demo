@@ -34,11 +34,11 @@ public class ExcelDemoController {
             //无实体动态表头下载
 //          excelDemoService.downloadDynamicNoEntity("heads", response);
             //有实体动态表头下载
-//          excelDemoService.downloadDynamicWithEntity("heads", response);
+          excelDemoService.downloadDynamicWithEntity("heads", response);
             //固定表头下载
 //            excelDemoService.downloadWithFixedHead(response);
             //数据量大的复杂填充，采用模板方式
-            excelDemoService.complexFillWithTable(response);
+//            excelDemoService.complexFillWithTable(response);
 
 
         } catch (IOException e) {

@@ -9,13 +9,10 @@ import com.example.git_demo.stream.UserInfo;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -73,7 +70,7 @@ public class ExcelDemoService {
         List<UserInfo> userInfos = UserInfo.getData("MaxUserInfo.txt");
         List<List<UserInfo>> partition = ListUtils.partition(userInfos, 1000);
         //导出的列
-        Set<String> includeColumnFieldNames = new HashSet<>();
+        List<String> includeColumnFieldNames = new ArrayList<>();
         includeColumnFieldNames.add("address");
         includeColumnFieldNames.add("name");
         includeColumnFieldNames.add("age");
