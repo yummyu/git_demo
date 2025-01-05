@@ -1,7 +1,7 @@
 package com.example.git_demo.excel;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.util.ListUtils;
+import cn.idev.excel.EasyExcel;
+import cn.idev.excel.util.ListUtils;
 import com.example.git_demo.excel.entity.ComplexTemplate;
 import com.example.git_demo.excel.entity.FixedHead;
 import com.google.common.collect.Lists;

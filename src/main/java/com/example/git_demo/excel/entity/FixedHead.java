@@ -1,9 +1,9 @@
 package com.example.git_demo.excel.entity;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.alibaba.excel.annotation.write.style.HeadFontStyle;
-import com.alibaba.excel.annotation.write.style.HeadStyle;
+import cn.idev.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.write.style.ColumnWidth;
+import cn.idev.excel.annotation.write.style.HeadFontStyle;
+import cn.idev.excel.annotation.write.style.HeadStyle;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.Font;

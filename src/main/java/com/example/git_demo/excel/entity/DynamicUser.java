@@ -1,6 +1,6 @@
 package com.example.git_demo.excel.entity;
 
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.ExcelProperty;
 import lombok.Getter;
 import lombok.Setter;
 

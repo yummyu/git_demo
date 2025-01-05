@@ -1,6 +1,6 @@
 package com.example.git_demo.excel;
 
-import com.alibaba.excel.EasyExcel;
+import cn.idev.excel.EasyExcel;
 import com.example.git_demo.stream.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;

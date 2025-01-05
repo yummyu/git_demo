@@ -1,8 +1,8 @@
 package com.example.git_demo.excel.service;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
+import cn.idev.excel.EasyExcel;
+import cn.idev.excel.ExcelWriter;
+import cn.idev.excel.write.metadata.WriteSheet;
 import com.example.git_demo.excel.ExcelUtil;
 import com.example.git_demo.excel.entity.DynamicUser;
 import com.example.git_demo.stream.UserInfo;
