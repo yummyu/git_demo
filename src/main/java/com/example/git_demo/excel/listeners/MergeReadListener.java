@@ -8,15 +8,27 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Slf4j
 public class MergeReadListener extends AnalysisEventListener<Map<Integer, Object>> {
-    private List<Map<Integer, Object>> dataList = new ArrayList<>();
+    private final List<Map<Integer, Object>> dataList = new ArrayList<>();
 
-    private List<CellExtra> extraList = new ArrayList<>();
+    private final List<CellExtra> extraList = new ArrayList<>();
+
+    //处理合并单元格中空行问题 -> 实际行索引 - 实际数据索引
+    private final Map<Integer, Integer> physicalRow = new HashMap<>();
+
+    private final int headRow;
+
+    int currentRow = 1;
+
+    public MergeReadListener(int headRow){
+        this.headRow = headRow;
+    }
 
 
     @Override
@@ -25,15 +37,22 @@ public class MergeReadListener extends AnalysisEventListener<Map<Integer, Object
         if (approximateTotalRowNumber == null) {
             log.warn("approximateTotalRowNumber is null, skipping.");
             return;
-        }else {
+        } else {
             log.info("approximateTotalRowNumber:{}", approximateTotalRowNumber);
         }
+
+        Integer rowIndex = context.readSheetHolder().getRowIndex();
+        log.info("当前数据行:{}", rowIndex);
+
         log.info("Processing data: {}", data);
         if (data != null) {
             dataList.add(data);
         } else {
             log.warn("Encountered null data, skipping.");
         }
+
+        physicalRow.put(rowIndex, currentRow++);
+
 //        String validate = ValidatorUtil.validate(data);
 //        log.info("validate:{}", validate);
     }
@@ -41,7 +60,7 @@ public class MergeReadListener extends AnalysisEventListener<Map<Integer, Object
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         log.info("All data parsed, starting to fill data list by merge.");
-        fillDataListByMerge(dataList, extraList, 1);
+        fillDataListByMerge(dataList, extraList);
         log.info("Data list filled by merge.");
 
         dataList.forEach(data -> log.info("Processed data: {}", data));
@@ -55,35 +74,37 @@ public class MergeReadListener extends AnalysisEventListener<Map<Integer, Object
     }
 
     //copy https://blog.csdn.net/weixin_45186601/article/details/136684653
-    private static void fillDataListByMerge(List<Map<Integer, Object>> dataList, List<CellExtra> extraList, Integer headRow) {
+    private  void fillDataListByMerge(List<Map<Integer, Object>> dataList, List<CellExtra> extraList) {
         for (CellExtra cellExtra : extraList) {
-            Integer rowIndex = cellExtra.getRowIndex();
+//            Integer rowIndex = cellExtra.getRowIndex();
+            Integer rowIndex = physicalRow.get(cellExtra.getRowIndex());
             if (rowIndex < headRow) {
                 continue;
             }
+            log.info("actualRow: {}", rowIndex);
             int dataListIndex = rowIndex - headRow;
             Integer dataMapKey = cellExtra.getColumnIndex();
             Map<Integer, Object> dataMap = dataList.get(dataListIndex);
-            int firstRowIndex = cellExtra.getFirstRowIndex() - headRow;
-            int lastRowIndex = cellExtra.getLastRowIndex() - headRow;
+            int firstRowIndex = physicalRow.get(cellExtra.getFirstRowIndex()) - headRow;
+            int lastRowIndex =  physicalRow.get(cellExtra.getLastRowIndex()) - headRow;
             Integer firstColumnIndex = cellExtra.getFirstColumnIndex();
             Integer lastColumnIndex = cellExtra.getLastColumnIndex();
             Object value = dataMap.get(dataMapKey);
-            log.debug("Handling cell merge at row index: {}, column index: {}", rowIndex, dataMapKey);
+            log.info("Handling cell merge at row index: {}, column index: {}", rowIndex, dataMapKey);
 
             handleHorizontalMerge(dataMap, firstColumnIndex, lastColumnIndex, value);
             handleVerticalMerge(dataList, firstRowIndex, lastRowIndex, firstColumnIndex, lastColumnIndex, value);
         }
     }
 
-    private static void handleHorizontalMerge(Map<Integer, Object> dataMap, Integer firstColumnIndex, Integer lastColumnIndex, Object value) {
+    private void handleHorizontalMerge(Map<Integer, Object> dataMap, Integer firstColumnIndex, Integer lastColumnIndex, Object value) {
         for (int i = firstColumnIndex + 1; i < lastColumnIndex + 1; i++) {
             dataMap.put(i, value);
             log.debug("Horizontal merge: setting column index {} to value {}", i, value);
         }
     }
 
-    private static void handleVerticalMerge(List<Map<Integer, Object>> dataList, int firstRowIndex, int lastRowIndex, Integer firstColumnIndex, Integer lastColumnIndex, Object value) {
+    private void handleVerticalMerge(List<Map<Integer, Object>> dataList, int firstRowIndex, int lastRowIndex, Integer firstColumnIndex, Integer lastColumnIndex, Object value) {
         for (int i = firstRowIndex + 1; i < lastRowIndex + 1; i++) {
             Map<Integer, Object> integerObjectMap = dataList.get(i);
             integerObjectMap.put(firstColumnIndex, value);

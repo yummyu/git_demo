@@ -11,8 +11,6 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class ExcelReadTest {
@@ -30,7 +28,7 @@ public class ExcelReadTest {
 
     @Test
     public void testReadWithMultiHeadAndCheck() throws FileNotFoundException {
-        MergeReadListener mergeReadListener = new MergeReadListener();
+        MergeReadListener mergeReadListener = new MergeReadListener(1);
         File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "multiHeads.xlsx");
         EasyExcel.read(file, mergeReadListener).extraRead(CellExtraTypeEnum.MERGE)
                 .sheet().doRead();
