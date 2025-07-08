@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.git_demo.mapper.TUserMapper">
+    <resultMap id="userMap" type="com.example.git_demo.entity.TUserInfo">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName"/>
+        <result column="user_phone" property="userPhone"/>
+    </resultMap>
+
+
+    <select id="getUserInfoById" resultMap="userMap">
+        select id,user_name,user_phone from t_user where id = #{id}
+    </select>
+
+</mapper>

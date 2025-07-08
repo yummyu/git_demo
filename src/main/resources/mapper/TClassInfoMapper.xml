@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.git_demo.mapper.TClassMapper">
+
+
+    <insert id="saveClassInfo">
+        INSERT INTO test.t_class (class_name)
+                VALUES(#{className})
+    </insert>
+
+    <insert id="saveBatchStudentInfo">
+        INSERT INTO test.t_student (id, user_name, user_no, class_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.userName}, #{item.userNo}, #{item.classId})
+        </foreach>
+    </insert>
+
+    <insert id="saveBatchSubjectInfo">
+        INSERT INTO test.t_subject (subject_name, subject_score, student_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.subjectName}, #{item.subjectScore}, #{item.studentId})
+        </foreach>
+    </insert>
+
+    <resultMap id="exportInfo" type="batchClassInfo">
+        <id column="id" property="id" />
+        <result column="class_name" property="className" />
+        <collection property="infoList" ofType="batchStudentInfo">
+            <id column="subject_id" property="subjectId" />
+            <result column="user_name" property="userName" />
+            <result column="user_no" property="userNo" />
+            <result column="subject_name" property="subjectName" />
+            <result column="subject_score" property="subjectScore" />
+        </collection>
+
+    </resultMap>
+
+    <select id="getExportStudentInfo" resultMap="exportInfo">
+        SELECT
+            a.id,
+            a.class_name,
+            b.user_name,
+            b.user_no,
+            c.id subject_id,
+            c.subject_name,
+            c.subject_score
+        FROM
+            test.t_class a
+        LEFT JOIN test.t_student b ON a.id = b.class_id
+        LEFT JOIN test.t_subject c ON b.id = c.student_id
+        ORDER BY b.class_id,c.student_id,c.id
+
+    </select>
+
+</mapper>

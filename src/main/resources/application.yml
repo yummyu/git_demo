@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: git_demo
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password:
+    hikari:
+        connection-test-query: SELECT 1
+
+mybatis :
+    type-aliases-package: com.example.git_demo.entity
+    mapper-locations: classpath*:mapper/*.xml
+
+
+
+
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId}] [%thread] %-5level %logger{50} - %msg%n"
+
+
+
