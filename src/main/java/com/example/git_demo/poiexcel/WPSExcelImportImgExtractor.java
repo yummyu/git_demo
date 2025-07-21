@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -49,12 +50,12 @@ public class WPSExcelImportImgExtractor {
             if ("xl/cellimages.xml".equals(entryName)) {
                 baos = new ByteArrayOutputStream();
                 IOUtils.copy(zis, baos);
-                cellImagesXml = baos.toString("UTF-8");
+                cellImagesXml = baos.toString(StandardCharsets.UTF_8);
                 baos.close();
             } else if ("xl/_rels/cellimages.xml.rels".equals(entryName)) {
                 baos = new ByteArrayOutputStream();
                 IOUtils.copy(zis, baos);
-                cellImagesRelsXml = baos.toString("UTF-8");
+                cellImagesRelsXml = baos.toString(StandardCharsets.UTF_8);
                 baos.close();
             } else if (entryName.startsWith("xl/media/")) {
                 byte[] imageBytes = IOUtils.toByteArray(zis);
@@ -69,7 +70,7 @@ public class WPSExcelImportImgExtractor {
         if (cellImagesRelsXml != null) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document relsDoc = builder.parse(new ByteArrayInputStream(cellImagesRelsXml.getBytes("UTF-8")));
+            Document relsDoc = builder.parse(new ByteArrayInputStream(cellImagesRelsXml.getBytes(StandardCharsets.UTF_8)));
             NodeList relNodes = relsDoc.getElementsByTagName("Relationship");
             for (int i = 0; i < relNodes.getLength(); i++) {
                 Element relElement = (Element) relNodes.item(i);
@@ -84,7 +85,7 @@ public class WPSExcelImportImgExtractor {
         if (cellImagesXml != null) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document cellImagesDoc = builder.parse(new ByteArrayInputStream(cellImagesXml.getBytes("UTF-8")));
+            Document cellImagesDoc = builder.parse(new ByteArrayInputStream(cellImagesXml.getBytes(StandardCharsets.UTF_8)));
             NodeList cellImageNodes = cellImagesDoc.getElementsByTagName("etc:cellImage");
             for (int i = 0; i < cellImageNodes.getLength(); i++) {
                 Element cellImageElement = (Element) cellImageNodes.item(i);

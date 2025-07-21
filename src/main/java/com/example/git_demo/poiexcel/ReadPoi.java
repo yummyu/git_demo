@@ -20,7 +20,7 @@ import java.util.Map;
 @Slf4j
 public class ReadPoi {
 
-    private static Map<String, String> cellImageMap = new HashMap<>();
+    private static final Map<String, String> cellImageMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         String excelFilePath = "C:\\Users\\Administrator\\Desktop\\新建 XLSX 工作表.xlsx";

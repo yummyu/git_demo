@@ -15,9 +15,9 @@ import java.util.List;
 public class MergeRowWriteHandler implements RowWriteHandler {
 
     //合并条件
-    private RowMergeCondition mergeCondition;
+    private final RowMergeCondition mergeCondition;
     //数据起始行
-    private int headRowIndex;
+    private final int headRowIndex;
     //需要合并的数据列
     private Integer[] lastMergeColumn;
 

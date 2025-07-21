@@ -15,8 +15,8 @@ import java.util.List;
 @Slf4j
 public class CustomerListener extends AnalysisEventListener<MultiHeads> {
 
-    private List<MultiHeads> list = new ArrayList<>();
-    private List<CellExtra> extraMergeInfoList = new ArrayList<>();
+    private final List<MultiHeads> list = new ArrayList<>();
+    private final List<CellExtra> extraMergeInfoList = new ArrayList<>();
     @Override
     public void invoke(MultiHeads data, AnalysisContext context) {
         log.info("读取到:{}", JSON.toJSONString(data));

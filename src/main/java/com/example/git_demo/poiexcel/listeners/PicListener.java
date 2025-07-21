@@ -14,7 +14,7 @@ import java.util.List;
 public class PicListener extends AnalysisEventListener<PicUser> {
 
     @Getter
-    private List<PicUser> list = new ArrayList<>();
+    private final List<PicUser> list = new ArrayList<>();
     @Override
     public void invoke(PicUser data, AnalysisContext context) {
         list.add(data);
